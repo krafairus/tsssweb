@@ -14,7 +14,7 @@
         }
 
         body {
-            background-color: #ffb6c1; /* Rosa claro */
+            background-color: #ffb6c1;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -24,7 +24,6 @@
             position: relative;
         }
 
-        /* Pantalla inicial */
         #initial-screen {
             display: flex;
             flex-direction: column;
@@ -59,7 +58,6 @@
             max-width: 90%;
         }
 
-        /* Botones */
         .btn {
             padding: 15px 30px;
             border: none;
@@ -81,7 +79,6 @@
             transform: scale(1.05);
         }
 
-        /* Pantalla de motivos */
         #reasons-screen {
             display: none;
             flex-direction: column;
@@ -125,7 +122,6 @@
             padding: 10px 20px;
         }
 
-        /* Corazones */
         .heart {
             position: absolute;
             pointer-events: none;
@@ -145,7 +141,6 @@
             }
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .main-text {
                 font-size: 2rem;
@@ -173,7 +168,7 @@
     </style>
 </head>
 <body>
-    <!-- Pantalla inicial -->
+
     <div id="initial-screen">
         <img id="initial-image" src="img.png" alt="Para Rubi" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjEwMCIgZmlsbD0iI2ZmODZiMyIvPjxwYXRoIGQ9Ik03MCA4MEM2MCA5MCA2MCAxMTAgNzAgMTIwQzgwIDEzMCAxMDAgMTMwIDExMCAxMjBDMTIwIDExMCAxMjAgOTAgMTEwIDgwQzEwMCA3MCA4MCA3MCA3MCA4MFoiIGZpbGw9IiNmZmZmZmYiLz48Y2lyY2xlIGN4PSI3MCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxjaXJjbGUgY3g9IjExMCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxwYXRoIGQ9Ik03MCAxNDBDOTAgMTUwIDExMCAxNTAgMTMwIDE0MCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg=='">
         <h1 class="main-text">Para rubi, mi niña.</h1>
@@ -182,20 +177,17 @@
         <button id="show-reasons" class="btn">Click para conocerlos ❤️</button>
     </div>
 
-    <!-- Pantalla de motivos -->
+
     <div id="reasons-screen">
         <div class="reasons-container">
-            <!-- Los motivos se insertarán aquí con JavaScript -->
         </div>
         <button class="btn thank-you-btn">Gracias por tu amistad</button>
         <button class="btn game-btn" onclick="window.location.href='game.html'">Jugar un juego 🤭</button>
     </div>
 
-    <!-- Imagen de respaldo (oculta) -->
     <img class="backup-image" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjEwMCIgZmlsbD0iI2ZmODZiMyIvPjxwYXRoIGQ9Ik03MCA4MEM2MCA5MCA2MCAxMTAgNzAgMTIwQzgwIDEzMCAxMDAgMTMwIDExMCAxMjBDMTIwIDExMCAxMjAgOTAgMTEwIDgwQzEwMCA3MCA4MCA3MCA3MCA4MFoiIGZpbGw9IiNmZmZmZmYiLz48Y2lyY2xlIGN4PSI3MCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxjaXJjbGUgY3g9IjExMCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxwYXRoIGQ9Ik03MCAxNDBDOTAgMTUwIDExMCAxNTAgMTMwIDE0MCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==" alt="Respaldo">
 
     <script>
-        // Lista de motivos
         const reasons = [
             "1. Tu sonrisa. ☺️",
             "2. La sinceridad en tus ojos.",
@@ -299,21 +291,17 @@
             "100. Porque, en resumen, eres tú"
         ];
 
-        // Mostrar motivos al hacer clic en el botón
         document.getElementById('show-reasons').addEventListener('click', function() {
             const initialScreen = document.getElementById('initial-screen');
             const reasonsScreen = document.getElementById('reasons-screen');
             const reasonsContainer = document.querySelector('.reasons-container');
             
-            // Ocultar pantalla inicial
             initialScreen.style.opacity = '0';
             
-            // Después de la transición, mostrar la pantalla de motivos
             setTimeout(() => {
                 initialScreen.style.display = 'none';
                 reasonsScreen.style.display = 'flex';
                 
-                // Agregar motivos al contenedor
                 reasons.forEach(reason => {
                     const reasonElement = document.createElement('p');
                     reasonElement.className = 'reason';
@@ -323,12 +311,10 @@
             }, 500);
         });
 
-        // Crear corazones al hacer clic en cualquier parte de la página
         document.addEventListener('click', function(e) {
             createHeart(e.clientX, e.clientY);
         });
 
-        // Crear corazones al tocar en dispositivos móviles
         document.addEventListener('touchstart', function(e) {
             e.preventDefault();
             const touch = e.touches[0];
@@ -342,7 +328,6 @@
             heart.style.left = (x - 12) + 'px';
             heart.style.top = (y - 12) + 'px';
             
-            // Dirección aleatoria para la animación
             const randomX = (Math.random() - 0.5) * 200;
             const randomY = (Math.random() - 0.7) * 200;
             heart.style.setProperty('--x', randomX + 'px');
@@ -350,7 +335,6 @@
             
             document.body.appendChild(heart);
             
-            // Eliminar el corazón después de la animación
             setTimeout(() => {
                 heart.remove();
             }, 4000);
