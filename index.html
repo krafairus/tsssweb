@@ -164,12 +164,17 @@
                 padding: 12px;
             }
         }
+        
+        /* Estilo para imagen de respaldo */
+        .backup-image {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <!-- Pantalla inicial -->
     <div id="initial-screen">
-        <img id="initial-image" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjEwMCIgZmlsbD0iI2ZmODZiMyIvPjxwYXRoIGQ9Ik03MCA4MEM2MCA5MCA2MCAxMTAgNzAgMTIwQzgwIDEzMCAxMDAgMTMwIDExMCAxMjBDMTIwIDExMCAxMjAgOTAgMTEwIDgwQzEwMCA3MCA4MCA3MCA3MCA4MFoiIGZpbGw9IiNmZmZmZmYiLz48Y2lyY2xlIGN4PSI3MCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxjaXJjbGUgY3g9IjExMCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxwYXRoIGQ9Ik03MCAxNDBDOTAgMTUwIDExMCAxNTAgMTMwIDE0MCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==" alt="Corazón">
+        <img id="initial-image" src="/img.png" alt="Para Rubi" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjEwMCIgZmlsbD0iI2ZmODZiMyIvPjxwYXRoIGQ9Ik03MCA4MEM2MCA5MCA2MCAxMTAgNzAgMTIwQzgwIDEzMCAxMDAgMTMwIDExMCAxMjBDMTIwIDExMCAxMjAgOTAgMTEwIDgwQzEwMCA3MCA4MCA3MCA3MCA4MFoiIGZpbGw9IiNmZmZmZmYiLz48Y2lyY2xlIGN4PSI3MCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxjaXJjbGUgY3g9IjExMCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxwYXRoIGQ9Ik03MCAxNDBDOTAgMTUwIDExMCAxNTAgMTMwIDE0MCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg=='">
         <h1 class="main-text">Para rubi, mi niña.</h1>
         <p class="sub-text">Yo te daré los 100 motivos para amarte de verdad</p>
         <button id="show-reasons" class="btn">Click para conocerlos ❤️</button>
@@ -183,6 +188,9 @@
         <button class="btn thank-you-btn">Gracias por ser tú</button>
         <button class="btn game-btn" onclick="window.location.href='https://www.krafairus/game.html'">Jugar un juego 🤭</button>
     </div>
+
+    <!-- Imagen de respaldo (oculta) -->
+    <img class="backup-image" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjEwMCIgZmlsbD0iI2ZmODZiMyIvPjxwYXRoIGQ9Ik03MCA4MEM2MCA5MCA2MCAxMTAgNzAgMTIwQzgwIDEzMCAxMDAgMTMwIDExMCAxMjBDMTIwIDExMCAxMjAgOTAgMTEwIDgwQzEwMCA3MCA4MCA3MCA3MCA4MFoiIGZpbGw9IiNmZmZmZmYiLz48Y2lyY2xlIGN4PSI3MCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxjaXJjbGUgY3g9IjExMCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxwYXRoIGQ9Ik03MCAxNDBDOTAgMTUwIDExMCAxNTAgMTMwIDE0MCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==" alt="Respaldo">
 
     <script>
         // Lista de motivos
