@@ -166,7 +166,6 @@
             transform: scale(1.05);
         }
 
-        /* Efecto de explosión */
         @keyframes explode {
             0% { transform: scale(1); opacity: 1; }
             100% { transform: scale(3); opacity: 0; }
@@ -179,7 +178,6 @@
             z-index: 20;
         }
 
-        /* Animación para los emojis de celebración */
         @keyframes celebrate {
             0% { transform: translateY(0) scale(0.5); opacity: 0; }
             20% { transform: translateY(-20px) scale(1.2); opacity: 1; }
@@ -195,7 +193,6 @@
             animation: celebrate 2s forwards;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             #player {
                 width: 60px;
@@ -273,9 +270,8 @@
         let lastEnemySpawn = 0;
         let lastEnemyShoot = 0;
         let enemyShootInterval = 2000; // ms entre disparos de enemigos
-        let victoryAchieved = false; // Para controlar que la victoria solo se muestre una vez
+        let victoryAchieved = false; // para controlar que la victoria solo se muestre una vez
 
-        // Elementos del DOM
         const gameContainer = document.getElementById('game-container');
         const player = document.getElementById('player');
         const scoreDisplay = document.getElementById('score');
@@ -285,9 +281,7 @@
         const backToReasonsBtn = document.getElementById('back-to-reasons');
         const victoryMessage = document.getElementById('victory-message');
 
-        // Inicializar el juego
         function init() {
-            // Precargar imagen de jugador
             const playerImg = document.getElementById('player-img');
             playerImg.onerror = function() {
                 this.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjEwMCIgZmlsbD0iI2ZmODZiMyIvPjxwYXRoIGQ9Ik03MCA4MEM2MCA5MCA2MCAxMTAgNzAgMTIwQzgwIDEzMCAxMDAgMTMwIDExMCAxMjBDMTIwIDExMCAxMjAgOTAgMTEwIDgwQzEwMCA3MCA4MCA3MCA3MCA4MFoiIGZpbGw9IiNmZmZmZmYiLz48Y2lyY2xlIGN4PSI3MCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxjaXJjbGUgY3g9IjExMCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxwYXRoIGQ9Ik03MCAxNDBDOTAgMTUwIDExMCAxNTAgMTMwIDE0MCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FpPSJyb3VuZCIvPjwvc3ZnPg==';
@@ -297,14 +291,13 @@
             playerX = window.innerWidth / 2;
             updatePlayerPosition();
             
-            // Event listeners
             gameContainer.addEventListener('touchmove', handleTouchMove);
             gameContainer.addEventListener('mousemove', handleMouseMove);
             restartBtn.addEventListener('click', function() {
                 window.location.reload();
             });
             backToReasonsBtn.addEventListener('click', function() {
-                window.location.href = 'index.html'; // Asumiendo que la página principal es index.html
+                window.location.href = 'index.html'; 
             });
             
             // Iniciar bucle del juego
@@ -343,7 +336,7 @@
         // Crear un nuevo enemigo
         function spawnEnemy() {
             const enemyTypes = ['😡', '🤪', '😵‍💫', '🥸', '😈'];
-            const damageValues = [10, 15, 20, 25, 30]; // Daño de cada tipo de enemigo
+            const damageValues = [10, 15, 20, 25, 30]; 
             
             const typeIndex = Math.floor(Math.random() * enemyTypes.length);
             const enemy = {
@@ -365,7 +358,6 @@
             enemies.push(enemy);
         }
 
-        // Disparar una bala del jugador (desde abajo hacia arriba)
         function shoot() {
             const bullet = document.createElement('div');
             bullet.className = 'bullet';
@@ -381,7 +373,6 @@
             });
         }
 
-        // Disparar una bala de un enemigo (desde arriba hacia abajo)
         function enemyShoot(enemy) {
             const bullet = document.createElement('div');
             bullet.className = 'enemy-bullet';
@@ -397,7 +388,6 @@
             });
         }
 
-        // Crear efecto de explosión
         function createExplosion(x, y, emoji) {
             const explosion = document.createElement('div');
             explosion.className = 'explosion';
@@ -418,25 +408,21 @@
             victoryAchieved = true;
             victoryMessage.classList.add('show');
             
-            // Crear emojis de celebración
             createCelebrationEmojis();
             
-            // Ocultar mensaje después de 3 segundos
             setTimeout(() => {
                 victoryMessage.classList.remove('show');
             }, 8000);
         }
 
-        // Crear emojis de celebración en posiciones aleatorias
         function createCelebrationEmojis() {
-            const emojiCount = 15; // Número de emojis a crear
+            const emojiCount = 15; 
             
             for (let i = 0; i < emojiCount; i++) {
                 const emoji = document.createElement('div');
                 emoji.className = 'celebration-emoji';
                 emoji.textContent = '🎉';
                 
-                // Posición aleatoria en la pantalla
                 const xPos = Math.random() * (window.innerWidth - 40);
                 const yPos = Math.random() * (window.innerHeight - 40);
                 
@@ -445,7 +431,6 @@
                 
                 gameContainer.appendChild(emoji);
                 
-                // Eliminar el emoji después de la animación
                 setTimeout(() => {
                     if (emoji.parentNode) {
                         gameContainer.removeChild(emoji);
@@ -454,31 +439,25 @@
             }
         }
 
-        // Actualizar el juego
         function update() {
             const currentTime = Date.now();
             
-            // Disparar balas del jugador
             if (currentTime - lastBulletTime > bulletInterval) {
                 shoot();
                 lastBulletTime = currentTime;
             }
             
-            // Generar nuevos enemigos
             if (currentTime - lastEnemySpawn > enemySpawnRate) {
                 spawnEnemy();
                 lastEnemySpawn = currentTime;
             }
             
-            // Disparar balas de enemigos
             if (currentTime - lastEnemyShoot > enemyShootInterval && enemies.length > 0) {
-                // Elegir un enemigo aleatorio para disparar
                 const randomEnemyIndex = Math.floor(Math.random() * enemies.length);
                 enemyShoot(enemies[randomEnemyIndex]);
                 lastEnemyShoot = currentTime;
             }
             
-            // Mover enemigos
             for (let i = enemies.length - 1; i >= 0; i--) {
                 const enemy = enemies[i];
                 enemy.y += enemy.speed;
@@ -516,7 +495,6 @@
                         bullet.y > enemy.y &&
                         bullet.y < enemy.y + enemy.height
                     ) {
-                        // Colisión detectada
                         gameContainer.removeChild(bullet.element);
                         bullets.splice(i, 1);
                         
@@ -591,7 +569,6 @@
             gameOverScreen.style.display = 'flex';
         }
 
-        // Bucle principal del juego
         function gameLoop() {
             if (!gameOver) {
                 update();
@@ -599,7 +576,6 @@
             }
         }
 
-        // Iniciar el juego cuando se cargue la página
         window.addEventListener('load', init);
         window.addEventListener('resize', updatePlayerPosition);
     </script>
