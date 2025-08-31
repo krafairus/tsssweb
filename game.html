@@ -123,7 +123,7 @@
             max-width: 80%;
         }
 
-        #restart-btn {
+        .game-btn {
             padding: 15px 30px;
             background-color: #d81b60;
             color: white;
@@ -133,9 +133,12 @@
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin: 10px;
+            width: 250px;
+            text-align: center;
         }
 
-        #restart-btn:hover {
+        .game-btn:hover {
             background-color: #ad1457;
             transform: scale(1.05);
         }
@@ -176,6 +179,12 @@
             #game-over p {
                 font-size: 1.2rem;
             }
+            
+            .game-btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+                width: 220px;
+            }
         }
     </style>
 </head>
@@ -192,8 +201,9 @@
         
         <div id="game-over">
             <h1>¡Perdiste esta partida!</h1>
-            <p>Pero nunca nuestra amistad rubi ❤️</p>
-            <button id="restart-btn">Jugar de nuevo</button>
+            <p>Pero nunca a mi rubi ❤️</p>
+            <button class="game-btn" id="restart-btn">Jugar de nuevo</button>
+            <button class="game-btn" id="back-to-reasons">Volver a los motivos</button>
         </div>
     </div>
 
@@ -221,6 +231,7 @@
         const livesDisplay = document.getElementById('lives');
         const gameOverScreen = document.getElementById('game-over');
         const restartBtn = document.getElementById('restart-btn');
+        const backToReasonsBtn = document.getElementById('back-to-reasons');
 
         // Inicializar el juego
         function init() {
@@ -237,7 +248,12 @@
             // Event listeners
             gameContainer.addEventListener('touchmove', handleTouchMove);
             gameContainer.addEventListener('mousemove', handleMouseMove);
-            restartBtn.addEventListener('click', restartGame);
+            restartBtn.addEventListener('click', function() {
+                window.location.reload();
+            });
+            backToReasonsBtn.addEventListener('click', function() {
+                window.location.href = 'index.html'; // Asumiendo que la página principal es index.html
+            });
             
             // Iniciar bucle del juego
             gameLoop();
@@ -253,12 +269,22 @@
             e.preventDefault();
             const touch = e.touches[0];
             playerX = touch.clientX;
+            
+            // Limitar la nave dentro de los bordes de la pantalla
+            const halfPlayerWidth = player.offsetWidth / 2;
+            playerX = Math.max(halfPlayerWidth, Math.min(window.innerWidth - halfPlayerWidth, playerX));
+            
             updatePlayerPosition();
         }
 
         // Manejar movimiento del ratón
         function handleMouseMove(e) {
             playerX = e.clientX;
+            
+            // Limitar la nave dentro de los bordes de la pantalla
+            const halfPlayerWidth = player.offsetWidth / 2;
+            playerX = Math.max(halfPlayerWidth, Math.min(window.innerWidth - halfPlayerWidth, playerX));
+            
             updatePlayerPosition();
         }
 
@@ -287,7 +313,7 @@
             enemies.push(enemy);
         }
 
-        // Disparar una bala del jugador
+        // Disparar una bala del jugador (desde abajo hacia arriba)
         function shoot() {
             const bullet = document.createElement('div');
             bullet.className = 'bullet';
@@ -303,7 +329,7 @@
             });
         }
 
-        // Disparar una bala de un enemigo
+        // Disparar una bala de un enemigo (desde arriba hacia abajo)
         function enemyShoot(enemy) {
             const bullet = document.createElement('div');
             bullet.className = 'enemy-bullet';
@@ -373,11 +399,11 @@
                 }
             }
             
-            // Mover balas del jugador
+            // Mover balas del jugador (hacia arriba)
             for (let i = bullets.length - 1; i >= 0; i--) {
                 const bullet = bullets[i];
-                bullet.y -= bullet.speed;
-                bullet.element.style.bottom = `${bullet.y}px`;
+                bullet.y -= bullet.speed; // Mover hacia arriba (disminuir Y)
+                bullet.element.style.bottom = `${window.innerHeight - bullet.y}px`;
                 
                 // Comprobar si la bala salió de la pantalla
                 if (bullet.y < 0) {
@@ -392,8 +418,8 @@
                     if (
                         bullet.x > enemy.x && 
                         bullet.x < enemy.x + enemy.width &&
-                        bullet.y < enemy.y + enemy.height &&
-                        bullet.y > enemy.y
+                        bullet.y > enemy.y &&
+                        bullet.y < enemy.y + enemy.height
                     ) {
                         // Colisión detectada
                         gameContainer.removeChild(bullet.element);
@@ -415,10 +441,10 @@
                 }
             }
             
-            // Mover balas de enemigos
+            // Mover balas de enemigos (hacia abajo)
             for (let i = enemyBullets.length - 1; i >= 0; i--) {
                 const bullet = enemyBullets[i];
-                bullet.y += bullet.speed;
+                bullet.y += bullet.speed; // Mover hacia abajo (aumentar Y)
                 bullet.element.style.top = `${bullet.y}px`;
                 
                 // Comprobar si la bala salió de la pantalla
@@ -463,39 +489,6 @@
         function endGame() {
             gameOver = true;
             gameOverScreen.style.display = 'flex';
-        }
-
-        // Reiniciar el juego
-        function restartGame() {
-            // Limpiar enemigos y balas
-            for (const enemy of enemies) {
-                gameContainer.removeChild(enemy.element);
-            }
-            for (const bullet of bullets) {
-                gameContainer.removeChild(bullet.element);
-            }
-            for (const bullet of enemyBullets) {
-                gameContainer.removeChild(bullet.element);
-            }
-            
-            // Reiniciar variables
-            enemies = [];
-            bullets = [];
-            enemyBullets = [];
-            score = 0;
-            lives = 3;
-            gameOver = false;
-            
-            // Actualizar displays
-            scoreDisplay.textContent = `Puntos: ${score}`;
-            livesDisplay.textContent = `Vidas: ${lives}`;
-            
-            // Ocultar pantalla de game over
-            gameOverScreen.style.display = 'none';
-            
-            // Reposicionar jugador
-            playerX = window.innerWidth / 2;
-            updatePlayerPosition();
         }
 
         // Bucle principal del juego
