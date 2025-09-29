@@ -69,7 +69,7 @@
 
         #player {
             position: absolute;
-            bottom: 20px;
+            bottom: 50px; /* Aumentado para asegurar visibilidad completa */
             left: 50%;
             transform: translateX(-50%);
             width: 70px;
@@ -197,6 +197,7 @@
             #player {
                 width: 60px;
                 height: 60px;
+                bottom: 40px; /* Ajustado para dispositivos móviles */
             }
             
             #player img {
@@ -362,13 +363,13 @@
             const bullet = document.createElement('div');
             bullet.className = 'bullet';
             bullet.style.left = `${playerX - 2.5}px`;
-            bullet.style.bottom = `${player.offsetHeight + 20}px`;
+            bullet.style.bottom = `${player.offsetHeight + 50}px`; // Ajustado para la nueva posición del jugador
             gameContainer.appendChild(bullet);
             
             bullets.push({
                 element: bullet,
                 x: playerX - 2.5,
-                y: window.innerHeight - player.offsetHeight - 20,
+                y: window.innerHeight - player.offsetHeight - 50, // Ajustado para la nueva posición del jugador
                 speed: 5
             });
         }
