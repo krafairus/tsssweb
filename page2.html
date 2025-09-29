@@ -192,6 +192,136 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-15px); }
         }
+
+        /* Estilos para el botón flotante */
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            box-shadow: 0 8px 25px rgba(219, 112, 147, 0.6);
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            transition: all 0.3s ease;
+            animation: pulse-btn 2s infinite alternate;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(219, 112, 147, 0.8);
+        }
+
+        @keyframes pulse-btn {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        /* Estilos para la sección del poema */
+        .poem-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffb6c1, #ffc0cb, #ffd1dc, #ffe4e1);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            overflow-y: auto;
+        }
+
+        .poem-section.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .poem-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.5s ease;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .poem-section.active .poem-container {
+            transform: translateY(0);
+        }
+
+        .poem-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 32px;
+            color: #ff1493;
+            margin-bottom: 15px;
+        }
+
+        .poem-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .poem-text p {
+            margin-bottom: 15px;
+        }
+
+        .poem-signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 22px;
+            color: #ff1493;
+            margin-top: 15px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #ff1493;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            z-index: 2001;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 20, 147, 0.1);
+        }
+
+        .poem-emoji {
+            font-size: 22px;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -206,6 +336,40 @@
     </div>
 
     <div class="birthday-cake">🎂</div>
+
+    <!-- Botón flotante para abrir el poema -->
+    <button class="floating-btn" id="poemBtn">💌</button>
+
+    <!-- Sección del poema (oculta inicialmente) -->
+    <div class="poem-section" id="poemSection">
+        <div class="poem-container">
+            <button class="close-btn" id="closeBtn">✕</button>
+            <h2 class="poem-title">Para Mi Niña Especial</h2>
+            <div class="poem-text">
+                <p>En este día tan especial,<br>
+                quiero decirte con amor,<br>
+                que eres increíble, única y especial,<br>
+                mi mejor amiga, mi tesoro.</p>
+                
+                <p>Que pases un día increíble,<br>
+                te lo mereces, eres la mejor,<br>
+                que Dios te llene de bendiciones,<br>
+                y te colme de felicidad y amor.</p>
+                
+                <p>Es tu día, diviértete como niña,<br>
+                disfrútalo como una reina,<br>
+                con esa corona que te pertenece,<br>
+                y esa sonrisa que nunca se ausente.</p>
+                
+                <p>Te quiero un montón, mi niña,<br>
+                eres la mejor sin duda alguna,<br>
+                feliz cumpleaños, Angelica Rubi,<br>
+                que la vida te sonría con fortuna.</p>
+            </div>
+            <div class="poem-emoji">🎂🥳🎊💕👑🥰❤️🎁</div>
+            <div class="poem-signature">Con todo mi cariño</div>
+        </div>
+    </div>
 
     <script>
         // Crear emojis flotantes
@@ -315,6 +479,38 @@
                 }
             }, 2000);
         }
+        
+        // Funcionalidad para el botón flotante y la sección del poema
+        const poemBtn = document.getElementById('poemBtn');
+        const poemSection = document.getElementById('poemSection');
+        const closeBtn = document.getElementById('closeBtn');
+        
+        poemBtn.addEventListener('click', function() {
+            poemSection.classList.add('active');
+            // Pausar las animaciones de fondo cuando se abre el poema
+            document.querySelectorAll('.floating-emoji').forEach(emoji => {
+                emoji.style.animationPlayState = 'paused';
+            });
+        });
+        
+        closeBtn.addEventListener('click', function() {
+            poemSection.classList.remove('active');
+            // Reanudar las animaciones de fondo cuando se cierra el poema
+            document.querySelectorAll('.floating-emoji').forEach(emoji => {
+                emoji.style.animationPlayState = 'running';
+            });
+        });
+        
+        // Cerrar el poema al hacer clic fuera del contenedor
+        poemSection.addEventListener('click', function(e) {
+            if (e.target === poemSection) {
+                poemSection.classList.remove('active');
+                // Reanudar las animaciones de fondo cuando se cierra el poema
+                document.querySelectorAll('.floating-emoji').forEach(emoji => {
+                    emoji.style.animationPlayState = 'running';
+                });
+            }
+        });
         
         // Inicializar la página inmediatamente
         window.onload = function() {
