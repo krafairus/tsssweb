@@ -25,6 +25,39 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
+            background: url('resources/fondo.jpg') no-repeat center center;
+            background-size: cover;
+        }
+
+        #start-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 300;
+            color: white;
+            text-align: center;
+            transition: opacity 0.5s ease;
+        }
+
+        #start-screen h1 {
+            font-size: 3rem;
+            color: #ff4d94;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 0, 128, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        #start-screen p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            max-width: 80%;
         }
 
         #score-container {
@@ -69,7 +102,7 @@
 
         #player {
             position: absolute;
-            bottom: 50px; /* Aumentado para asegurar visibilidad completa */
+            bottom: 50px;
             left: 50%;
             transform: translateX(-50%);
             width: 70px;
@@ -82,6 +115,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             z-index: 10;
             transition: transform 0.2s;
+            animation: float 3s ease-in-out infinite;
         }
 
         #player img {
@@ -98,6 +132,7 @@
             background-color: #ffff00;
             border-radius: 2px;
             z-index: 5;
+            box-shadow: 0 0 5px #ff0, 0 0 10px #ff0;
         }
 
         .enemy {
@@ -106,6 +141,8 @@
             text-align: center;
             z-index: 5;
             transition: transform 0.1s;
+            animation: enemyFloat 2s ease-in-out infinite;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
 
         .enemy-bullet {
@@ -115,6 +152,7 @@
             background-color: #00ffff;
             border-radius: 2px;
             z-index: 5;
+            box-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
         }
 
         #game-over {
@@ -193,11 +231,67 @@
             animation: celebrate 2s forwards;
         }
 
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+            100% { transform: translateX(-50%) translateY(0); }
+        }
+
+        @keyframes enemyFloat {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .power-up {
+            position: absolute;
+            font-size: 25px;
+            z-index: 5;
+            animation: powerUpFloat 3s ease-in-out infinite, rotate 4s linear infinite;
+        }
+
+        @keyframes powerUpFloat {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .damage-text {
+            position: absolute;
+            color: #ff0000;
+            font-weight: bold;
+            font-size: 1.2rem;
+            z-index: 20;
+            pointer-events: none;
+            animation: damageFloat 1s forwards;
+        }
+
+        @keyframes damageFloat {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-30px); opacity: 0; }
+        }
+
         @media (max-width: 768px) {
             #player {
                 width: 60px;
                 height: 60px;
-                bottom: 40px; /* Ajustado para dispositivos móviles */
+                bottom: 40px;
             }
             
             #player img {
@@ -228,11 +322,25 @@
                 padding: 10px;
                 right: 10px;
             }
+
+            #start-screen h1 {
+                font-size: 2.5rem;
+            }
+
+            #start-screen p {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
     <div id="game-container">
+        <div id="start-screen">
+            <h1>Lucha contra el enemigo jeje</h1>
+            <p>¡Protege tu corazón de los enemigos y rompe records sin limites!</p>
+            <button class="game-btn" id="start-btn">Iniciar Juego</button>
+        </div>
+        
         <div id="score-container">
             <div id="score">Puntos: 0</div>
             <div id="lives">Vidas: 3</div>
@@ -260,11 +368,13 @@
         let score = 0;
         let lives = 3;
         let gameOver = false;
+        let gameStarted = false;
         let playerX = 0;
         let playerSpeed = 5;
         let enemies = [];
         let bullets = [];
         let enemyBullets = [];
+        let powerUps = [];
         let lastBulletTime = 0;
         let bulletInterval = 300; // ms entre disparos
         let enemySpawnRate = 1500; // ms entre aparición de enemigos
@@ -272,12 +382,16 @@
         let lastEnemyShoot = 0;
         let enemyShootInterval = 2000; // ms entre disparos de enemigos
         let victoryAchieved = false; // para controlar que la victoria solo se muestre una vez
+        let lastPowerUpSpawn = 0;
+        let powerUpSpawnRate = 10000; // ms entre aparición de power-ups
 
         const gameContainer = document.getElementById('game-container');
         const player = document.getElementById('player');
         const scoreDisplay = document.getElementById('score');
         const livesDisplay = document.getElementById('lives');
         const gameOverScreen = document.getElementById('game-over');
+        const startScreen = document.getElementById('start-screen');
+        const startBtn = document.getElementById('start-btn');
         const restartBtn = document.getElementById('restart-btn');
         const backToReasonsBtn = document.getElementById('back-to-reasons');
         const victoryMessage = document.getElementById('victory-message');
@@ -294,12 +408,21 @@
             
             gameContainer.addEventListener('touchmove', handleTouchMove);
             gameContainer.addEventListener('mousemove', handleMouseMove);
+            startBtn.addEventListener('click', startGame);
             restartBtn.addEventListener('click', function() {
                 window.location.reload();
             });
             backToReasonsBtn.addEventListener('click', function() {
                 window.location.href = 'index.html'; 
             });
+        }
+
+        function startGame() {
+            gameStarted = true;
+            startScreen.style.opacity = '0';
+            setTimeout(() => {
+                startScreen.style.display = 'none';
+            }, 500);
             
             // Iniciar bucle del juego
             gameLoop();
@@ -312,6 +435,7 @@
 
         // Manejar movimiento táctil
         function handleTouchMove(e) {
+            if (!gameStarted) return;
             e.preventDefault();
             const touch = e.touches[0];
             playerX = touch.clientX;
@@ -325,6 +449,7 @@
 
         // Manejar movimiento del ratón
         function handleMouseMove(e) {
+            if (!gameStarted) return;
             playerX = e.clientX;
             
             // Limitar la nave dentro de los bordes de la pantalla
@@ -359,17 +484,37 @@
             enemies.push(enemy);
         }
 
+        // Crear un power-up
+        function spawnPowerUp() {
+            const powerUpTypes = ['❤️', '⭐', '💎'];
+            const powerUp = {
+                element: document.createElement('div'),
+                x: Math.random() * (window.innerWidth - 30),
+                y: -30,
+                speed: 1.5,
+                type: powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)],
+                width: 30,
+                height: 30
+            };
+            
+            powerUp.element.className = 'power-up';
+            powerUp.element.textContent = powerUp.type;
+            gameContainer.appendChild(powerUp.element);
+            
+            powerUps.push(powerUp);
+        }
+
         function shoot() {
             const bullet = document.createElement('div');
             bullet.className = 'bullet';
             bullet.style.left = `${playerX - 2.5}px`;
-            bullet.style.bottom = `${player.offsetHeight + 50}px`; // Ajustado para la nueva posición del jugador
+            bullet.style.bottom = `${player.offsetHeight + 50}px`;
             gameContainer.appendChild(bullet);
             
             bullets.push({
                 element: bullet,
                 x: playerX - 2.5,
-                y: window.innerHeight - player.offsetHeight - 50, // Ajustado para la nueva posición del jugador
+                y: window.innerHeight - player.offsetHeight - 50,
                 speed: 5
             });
         }
@@ -400,6 +545,19 @@
             setTimeout(() => {
                 gameContainer.removeChild(explosion);
             }, 500);
+        }
+
+        function showDamageText(x, y, text) {
+            const damageText = document.createElement('div');
+            damageText.className = 'damage-text';
+            damageText.textContent = text;
+            damageText.style.left = `${x}px`;
+            damageText.style.top = `${y}px`;
+            gameContainer.appendChild(damageText);
+            
+            setTimeout(() => {
+                gameContainer.removeChild(damageText);
+            }, 1000);
         }
 
         // Mostrar mensaje de victoria
@@ -441,6 +599,8 @@
         }
 
         function update() {
+            if (!gameStarted) return;
+            
             const currentTime = Date.now();
             
             if (currentTime - lastBulletTime > bulletInterval) {
@@ -453,12 +613,18 @@
                 lastEnemySpawn = currentTime;
             }
             
+            if (currentTime - lastPowerUpSpawn > powerUpSpawnRate) {
+                spawnPowerUp();
+                lastPowerUpSpawn = currentTime;
+            }
+            
             if (currentTime - lastEnemyShoot > enemyShootInterval && enemies.length > 0) {
                 const randomEnemyIndex = Math.floor(Math.random() * enemies.length);
                 enemyShoot(enemies[randomEnemyIndex]);
                 lastEnemyShoot = currentTime;
             }
             
+            // Actualizar enemigos
             for (let i = enemies.length - 1; i >= 0; i--) {
                 const enemy = enemies[i];
                 enemy.y += enemy.speed;
@@ -474,10 +640,57 @@
                 }
             }
             
+            // Actualizar power-ups
+            for (let i = powerUps.length - 1; i >= 0; i--) {
+                const powerUp = powerUps[i];
+                powerUp.y += powerUp.speed;
+                powerUp.element.style.left = `${powerUp.x}px`;
+                powerUp.element.style.top = `${powerUp.y}px`;
+                
+                // Comprobar si el power-up llegó al fondo
+                if (powerUp.y > window.innerHeight) {
+                    gameContainer.removeChild(powerUp.element);
+                    powerUps.splice(i, 1);
+                    continue;
+                }
+                
+                // Comprobar colisiones con el jugador
+                const playerRect = player.getBoundingClientRect();
+                if (
+                    powerUp.x > playerRect.left && 
+                    powerUp.x < playerRect.right &&
+                    powerUp.y > playerRect.top &&
+                    powerUp.y < playerRect.bottom
+                ) {
+                    // Colisión con power-up
+                    gameContainer.removeChild(powerUp.element);
+                    powerUps.splice(i, 1);
+                    
+                    // Aplicar efecto del power-up
+                    if (powerUp.type === '❤️') {
+                        lives = Math.min(lives + 1, 5);
+                        livesDisplay.textContent = `Vidas: ${lives}`;
+                        showDamageText(playerRect.left, playerRect.top, '+1 Vida');
+                    } else if (powerUp.type === '⭐') {
+                        score += 20;
+                        scoreDisplay.textContent = `Puntos: ${score}`;
+                        showDamageText(playerRect.left, playerRect.top, '+20 Puntos');
+                    } else if (powerUp.type === '💎') {
+                        bulletInterval = Math.max(100, bulletInterval - 50);
+                        showDamageText(playerRect.left, playerRect.top, 'Disparo Rápido');
+                    }
+                    
+                    // Comprobar si se alcanzaron 100 puntos
+                    if (score >= 100 && !victoryAchieved) {
+                        showVictoryMessage();
+                    }
+                }
+            }
+            
             // Mover balas del jugador (hacia arriba)
             for (let i = bullets.length - 1; i >= 0; i--) {
                 const bullet = bullets[i];
-                bullet.y -= bullet.speed; // Mover hacia arriba (disminuir Y)
+                bullet.y -= bullet.speed;
                 bullet.element.style.bottom = `${window.innerHeight - bullet.y}px`;
                 
                 // Comprobar si la bala salió de la pantalla
@@ -523,7 +736,7 @@
             // Mover balas de enemigos (hacia abajo)
             for (let i = enemyBullets.length - 1; i >= 0; i--) {
                 const bullet = enemyBullets[i];
-                bullet.y += bullet.speed; // Mover hacia abajo (aumentar Y)
+                bullet.y += bullet.speed;
                 bullet.element.style.top = `${bullet.y}px`;
                 
                 // Comprobar si la bala salió de la pantalla
