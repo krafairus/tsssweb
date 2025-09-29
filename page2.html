@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños Angelica Rubi!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffb6c1, #ffc0cb, #ffd1dc, #ffe4e1);
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            touch-action: manipulation;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+            animation: fadeIn 2s ease-out;
+        }
+
+        .photo-container {
+            width: 280px;
+            height: 280px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            box-shadow: 0 15px 30px rgba(219, 112, 147, 0.4);
+            overflow: hidden;
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            border: 8px solid white;
+            animation: pulse 3s infinite alternate;
+        }
+
+        .photo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .message {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 350px;
+            margin: 0 auto;
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: 24px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .name {
+            font-family: 'Dancing Script', cursive;
+            font-size: 32px;
+            color: #ff1493;
+            display: block;
+            margin: 8px 0;
+        }
+
+        .emoji {
+            font-size: 28px;
+            margin-top: 10px;
+            display: block;
+        }
+
+        .floating-emoji {
+            position: absolute;
+            font-size: 32px;
+            opacity: 0;
+            z-index: 2;
+            user-select: none;
+            pointer-events: none;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            z-index: 100;
+            pointer-events: none;
+            animation: heart-float 1.5s ease-out forwards;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .sparkle {
+            position: absolute;
+            font-size: 20px;
+            z-index: 100;
+            pointer-events: none;
+            animation: sparkle 2s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 15px 30px rgba(219, 112, 147, 0.4); }
+            50% { transform: scale(1.03); box-shadow: 0 20px 40px rgba(219, 112, 147, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 15px 30px rgba(219, 112, 147, 0.4); }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes heart-float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        @keyframes sparkle {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-80px) rotate(180deg) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .birthday-cake {
+            position: absolute;
+            bottom: 20px;
+            font-size: 40px;
+            animation: bounce 2s infinite;
+            z-index: 10;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="photo-container">
+            <img class="photo" src="resources/fo.png" alt="Angelica Rubi">
+        </div>
+        <div class="message">
+            <h1>Feliz cumpleaños mi niña,<br><span class="name">Angelica Rubi</span><br>Mi mejor amiga por siempre</h1>
+            <span class="emoji">🥰🫶🏻🥹💖</span>
+        </div>
+    </div>
+
+    <div class="birthday-cake">🎂</div>
+
+    <script>
+        // Crear emojis flotantes
+        const emojis = ['🎉', '🎂', '🎁', '🎈', '✨', '💖', '🌸', '💕', '🥳', '🎊', '🌟', '💫'];
+        const colors = ['#ff69b4', '#ff1493', '#db7093', '#c71585', '#ffb6c1', '#ff85a2'];
+        
+        // Función para crear emojis flotantes - SIN RETRASO
+        function initializeFloatingEmojis() {
+            // Crear primeros emojis inmediatamente
+            for (let i = 0; i < 12; i++) {
+                createFloatingEmoji();
+            }
+            
+            // Continuar creando emojis cada 500ms (más frecuente)
+            setInterval(createFloatingEmoji, 500);
+        }
+        
+        function createFloatingEmoji() {
+            const emoji = document.createElement('div');
+            emoji.className = 'floating-emoji';
+            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            emoji.style.left = Math.random() * 100 + 'vw';
+            emoji.style.color = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Añadir variación en el tamaño
+            const size = 24 + Math.random() * 20;
+            emoji.style.fontSize = size + 'px';
+            
+            // Añadir variación en la duración de la animación
+            const duration = 8 + Math.random() * 10;
+            emoji.style.animation = `float ${duration}s linear forwards`;
+            
+            document.body.appendChild(emoji);
+            
+            // Eliminar el emoji después de que termine la animación
+            setTimeout(() => {
+                if (emoji.parentNode) {
+                    emoji.remove();
+                }
+            }, duration * 1000);
+        }
+        
+        // Variable para controlar el tiempo entre toques (evitar spam)
+        let lastTouchTime = 0;
+        const touchCooldown = 300; // 300ms entre toques
+        
+        // Crear corazones al tocar la pantalla - REDUCIDOS
+        document.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            
+            // Prevenir spam de toques
+            const currentTime = new Date().getTime();
+            if (currentTime - lastTouchTime < touchCooldown) return;
+            lastTouchTime = currentTime;
+            
+            // REDUCIDO: Solo 3 corazones y 2 destellos (en lugar de 8 cada uno)
+            for (let i = 0; i < 3; i++) {
+                createHeart(e.touches[0].clientX, e.touches[0].clientY);
+            }
+            for (let i = 0; i < 2; i++) {
+                createSparkle(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        });
+        
+        // También para clics (por si se usa en escritorio) - REDUCIDOS
+        document.addEventListener('click', function(e) {
+            // REDUCIDO: Solo 3 corazones y 2 destellos
+            for (let i = 0; i < 3; i++) {
+                createHeart(e.clientX, e.clientY);
+            }
+            for (let i = 0; i < 2; i++) {
+                createSparkle(e.clientX, e.clientY);
+            }
+        });
+        
+        function createHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = (x - 12 + Math.random() * 40 - 20) + 'px'; // Menor dispersión
+            heart.style.top = (y - 12 + Math.random() * 40 - 20) + 'px'; // Menor dispersión
+            heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+            heart.style.fontSize = (20 + Math.random() * 10) + 'px'; // Tamaño más consistente
+            document.body.appendChild(heart);
+            
+            // Eliminar el corazón después de la animación
+            setTimeout(() => {
+                if (heart.parentNode) {
+                    heart.remove();
+                }
+            }, 1500);
+        }
+        
+        function createSparkle(x, y) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.textContent = '✨';
+            sparkle.style.left = (x - 10 + Math.random() * 30 - 15) + 'px'; // Menor dispersión
+            sparkle.style.top = (y - 10 + Math.random() * 30 - 15) + 'px'; // Menor dispersión
+            sparkle.style.color = '#fffacd';
+            document.body.appendChild(sparkle);
+            
+            // Eliminar el destello después de la animación
+            setTimeout(() => {
+                if (sparkle.parentNode) {
+                    sparkle.remove();
+                }
+            }, 2000);
+        }
+        
+        // Inicializar la página inmediatamente
+        window.onload = function() {
+            initializeFloatingEmojis();
+        };
+    </script>
+</body>
+  </html>
