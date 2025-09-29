@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Cumpleaños Angelica Rubi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffb6c1, #ffc0cb, #ffd1dc);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            touch-action: manipulation;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .photo-container {
+            width: 250px;
+            height: 250px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            position: relative;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        .placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .message {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            backdrop-filter: blur(5px);
+        }
+
+        h1 {
+            color: #e91e63;
+            font-size: 24px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .emoji {
+            font-size: 28px;
+            margin-top: 10px;
+        }
+
+        /* Estilos para los emojis flotantes */
+        .floating-emoji {
+            position: absolute;
+            font-size: 30px;
+            opacity: 0;
+            z-index: 1;
+            animation: float 15s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Estilos para los corazones al tocar */
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            pointer-events: none;
+            z-index: 100;
+            animation: heartAnimation 1.5s ease-out forwards;
+        }
+
+        @keyframes heartAnimation {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .photo-container {
+                width: 200px;
+                height: 200px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .floating-emoji {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="photo-container">
+            <!-- Reemplaza la URL con la foto de Angelica Rubi -->
+            <div class="placeholder">Coloca aquí la foto de Angelica Rubi</div>
+            <!-- <img src="URL_DE_LA_FOTO" alt="Angelica Rubi" class="photo"> -->
+        </div>
+        <div class="message">
+            <h1>Feliz cumpleaños mi niña, Angelica Rubi,<br>Mi mejor amiga por siempre</h1>
+            <div class="emoji">🥰🫶🏻🥹</div>
+        </div>
+    </div>
+
+    <script>
+        // Crear emojis flotantes
+        function createFloatingEmojis() {
+            const emojis = ['🎉', '🎂', '🎈', '🎁', '✨', '💖', '🌸', '💝', '🦋', '💫'];
+            const body = document.body;
+            
+            // Crear 15 emojis flotantes
+            for (let i = 0; i < 15; i++) {
+                const emoji = document.createElement('div');
+                emoji.className = 'floating-emoji';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                // Posición inicial aleatoria
+                emoji.style.left = Math.random() * 100 + 'vw';
+                
+                // Retraso y duración aleatorios para animación
+                emoji.style.animationDelay = Math.random() * 15 + 's';
+                emoji.style.animationDuration = (15 + Math.random() * 10) + 's';
+                
+                // Tamaño aleatorio
+                const size = 20 + Math.random() * 20;
+                emoji.style.fontSize = size + 'px';
+                
+                body.appendChild(emoji);
+            }
+        }
+        
+        // Crear corazones al tocar
+        function createHeartsOnTouch(e) {
+            const heartEmojis = ['💖', '💗', '💓', '💞', '💕', '💘'];
+            const x = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const y = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+            
+            // Crear de 3 a 5 corazones en cada toque
+            const heartCount = 3 + Math.floor(Math.random() * 3);
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.left = x + 'px';
+                heart.style.top = y + 'px';
+                
+                // Color rosa aleatorio
+                const pinkShades = ['#ff69b4', '#ff1493', '#db7093', '#ffb6c1', '#ffc0cb'];
+                heart.style.color = pinkShades[Math.floor(Math.random() * pinkShades.length)];
+                
+                // Tamaño aleatorio
+                const size = 20 + Math.random() * 15;
+                heart.style.fontSize = size + 'px';
+                
+                // Retraso aleatorio para animación
+                heart.style.animationDelay = Math.random() * 0.5 + 's';
+                
+                document.body.appendChild(heart);
+                
+                // Eliminar el corazón después de la animación
+                setTimeout(() => {
+                    heart.remove();
+                }, 1500);
+            }
+        }
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            createFloatingEmojis();
+            
+            // Agregar event listeners para toques y clics
+            document.addEventListener('touchstart', createHeartsOnTouch);
+            document.addEventListener('click', createHeartsOnTouch);
+        });
+    </script>
+</body>
+  </html>
