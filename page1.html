@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motivos</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #ffb6c1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #initial-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            transition: opacity 0.5s ease;
+        }
+
+        #initial-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 30px;
+            border: 5px solid white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-text {
+            font-size: 2.5rem;
+            color: #d81b60;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .sub-text {
+            font-size: 1.2rem;
+            color: #880e4f;
+            margin-bottom: 30px;
+            max-width: 90%;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #show-reasons {
+            background-color: #d81b60;
+            color: white;
+        }
+
+        #show-reasons:hover {
+            background-color: #ad1457;
+            transform: scale(1.05);
+        }
+
+        #reasons-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .reasons-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            width: 100%;
+            margin-bottom: 30px;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .reason {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+        }
+
+        .thank-you-btn {
+            background-color: #d81b60;
+            color: white;
+            font-size: 1.5rem;
+            padding: 15px 40px;
+            margin: 20px 0;
+        }
+
+        .game-btn {
+            background-color: #4a148c;
+            color: white;
+            font-size: 1rem;
+            padding: 10px 20px;
+        }
+
+        .heart {
+            position: absolute;
+            pointer-events: none;
+            animation: float 4s ease-in forwards;
+            font-size: 24px;
+            z-index: 100;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y)) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-text {
+                font-size: 2rem;
+            }
+            
+            .sub-text {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+            
+            .reason {
+                font-size: 0.9rem;
+                padding: 12px;
+            }
+        }
+        
+        /* Estilo para imagen de respaldo */
+        .backup-image {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="initial-screen">
+        <img id="initial-image" src="img.png" alt="Para Rubi" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjEwMCIgZmlsbD0iI2ZmODZiMyIvPjxwYXRoIGQ9Ik03MCA4MEM2MCA5MCA2MCAxMTAgNzAgMTIwQzgwIDEzMCAxMDAgMTMwIDExMCAxMjBDMTIwIDExMCAxMjAgOTAgMTEwIDgwQzEwMCA3MCA4MCA3MCA3MCA4MFoiIGZpbGw9IiNmZmZmZmYiLz48Y2lyY2xlIGN4PSI3MCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxjaXJjbGUgY3g9IjExMCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxwYXRoIGQ9Ik03MCAxNDBDOTAgMTUwIDExMCAxNTAgMTMwIDE0MCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg=='">
+        <h1 class="main-text">Para rubi, mi niña.</h1>
+        <p class="sub-text">Yo te daré los 100 motivos para que te amen y te quieran de verdad</p>
+        <p class="sub-text">( Escritos cada uno por mi. )</p>
+        <button id="show-reasons" class="btn">Click para conocerlos ❤️</button>
+    </div>
+
+
+    <div id="reasons-screen">
+        <div class="reasons-container">
+        </div>
+        <button class="btn thank-you-btn">Gracias por tu amistad</button>
+        <button class="btn game-btn" onclick="window.location.href='game.html'">Jugar un juego 🤭</button>
+    </div>
+
+    <img class="backup-image" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjEwMCIgZmlsbD0iI2ZmODZiMyIvPjxwYXRoIGQ9Ik03MCA4MEM2MCA5MCA2MCAxMTAgNzAgMTIwQzgwIDEzMCAxMDAgMTMwIDExMCAxMjBDMTIwIDExMCAxMjAgOTAgMTEwIDgwQzEwMCA3MCA4MCA3MCA3MCA4MFoiIGZpbGw9IiNmZmZmZmYiLz48Y2lyY2xlIGN4PSI3MCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxjaXJjbGUgY3g9IjExMCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxwYXRoIGQ9Ik03MCAxNDBDOTAgMTUwIDExMCAxNTAgMTMwIDE0MCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==" alt="Respaldo">
+
+    <script>
+        const reasons = [
+            "1. Tu sonrisa. ☺️",
+            "2. La sinceridad en tus ojos.",
+            "3. Tu gran corazón ❤️",
+            "4. Tu apoyo incondicional.",
+            "5. Las cosas graciosas que me cuentas 🤭",
+            "6. Tu forma de ver el mundo.",
+            "7. Cómo me animas.",
+            "8. Tu fe en Dios. 🙏",
+            "9. La confianza que me das a alguien tan cerrado como yo 🥺❤️",
+            "10. La paz que siento a tu lado ❤️‍🩹",
+            "11. Tus retos curiosos y divertidos 🤭",
+            "12. Por confiar en uno 🥺",
+            "13. Los mensajes de cada día, esas hermosas horas que hablamos ❤️‍🩹.",
+            "14. La energía hermosa que brota de ti.",
+            "15. Cómo entiendes a los demas, como me aceptas como soy 🥺",
+            "16. Que me acerques a Dios a diferencia de otros 🫶🏻.",
+            "17. Tus bombardeos de vídeos 🤭",
+            "18. El tiempo en campañas que hemos compartido de la presencia de Dios",
+            "19. Tus enojos 🤭",
+            "20. Que siempre estás para mí.",
+            "21. El que confíes tanto que me mandes foto de lo que haces, que me cuentes de tu día a día ❤️",
+            "22. Tu respeto por los demás.",
+            "23. El brillo de tus ojos al hablar de las cosas que te gustan 🥰",
+            "24. Tu voz tranquila que me produce paz con tus audios",
+            "25. La forma en que me prestas atencion aunque escriba mucho 😅, gracias 🫂",
+            "26. Tu amabilidad.",
+            "27. Que me haces reír sin parar, el motivo de que mi hermano aveces se ría de mi por reírme solo jeje 🤭",
+            "28. Tus historias curiosas que te pasan ._., aveces me dejan sorprendido jeje",
+            "29. Que incluso aunque pases por cosas malas sigues adelante, esa fortaleza en ti.",
+            "30. Tus gustos curiosos, las monsthers jeje 🤭",
+            "31. Tu paciencia conmigo 😅",
+            "32. Que sabes perdonar 🥺",
+            "33. Tus gustos musicales, fan de bts 🫡",
+            "34. Tu optimismo(aunque lo llegues a dudar -_-)",
+            "35. La amistad que me ofreces.",
+            "36. Incluso tus chistes malos.",
+            "37. Tu dedicación, ejemplo con el voleibol",
+            "38. Que compartimos la misma fe.",
+            "39. La fuerza que me das.",
+            "40. Tu buen humor.",
+            "41. La manera en que me cuidas 😅 y no me dejas tomar sopa instantánea 😅",
+            "42. Tu lealtad.",
+            "43. Tus gestos amables.",
+            "44. Que me haces sentir especial.",
+            "45. Que incluso cuando respondes simple ahi detrás de eso un gran amor de parte tuya.",
+            "46. Tu capacidad de asombro.",
+            "47. Tu estilo único de ropa.",
+            "48. La paz de tu corazón.",
+            "49. Tu inteligencia, literal yo era peor que vos en el colegio 😅",
+            "50. La forma en que eres tú misma.",
+            "51. Tus mensajes cariñosos 🤭",
+            "52. Que eres un regalo de Dios.",
+            "53. La luz que irradias.",
+            "54. Tu amistad, que es como un tesoro.",
+            "55. Que me ayudas a ser mejor.",
+            "56. Que eres una bendición en mi vida.",
+            "57. La forma en que vives tu fe.",
+            "58. La manera en que te superas.",
+            "59. Tu sencillez (aunque aveces pides unas cosas jej 🤭)",
+            "60. Que me enseñas cosas nuevas, música, el usar manillas etc.",
+            "61. La forma en que te expresas.",
+            "62. Tu amor incondicional ❤️",
+            "63. La manera en que confías en Dios. 🙏",
+            "64. Tu mirada honesta.",
+            "65. Tus regaños tiernos 🤭",
+            "66. Esas ocurrencias tuyas jaja",
+            "67. Mmm tu hermosa y gran belleza.",
+            "68. Tus palabras de aliento.",
+            "69. La forma en que me respetas(aveces no 😐)",
+            "70. Que eres mi confidente.",
+            "71. Tu forma de resolver problemas 😐, la de tu mamá de que les pegaras si te molestaban 🤭",
+            "72. La manera en que eres mi amiga.",
+            "73. La paz que se siente en mi vida y en mi corazón contigo.",
+            "74. Que siempre respondes a mis mensajes aunque te mandé uno tras de otro jej",
+            "75. Que eres mi compañera de fe.",
+            "76. Que me recuerdas que ahí personas muy increíbles en esta vida.",
+            "77. Tu generosidad (aunque no me compartes un monsthers 😔😑)",
+            "78. La forma en que me acompañas en los momentos duros.",
+            "79. Que me dejas ser yo.",
+            "80. Esa forma curiosa tuya de ser",
+            "81. La forma en que me desafías jeje 🤭",
+            "82. Que me haces sentir bien. ❤️‍🩹",
+            "83. Que me cuidas sin que te lo pida (sopa instantánea :v)",
+            "84. Tus preguntas curiosas.",
+            "85. Que me recuerdas lo bueno",
+            "86. Que indirectamente me ayudas a sanar.",
+            "87. La forma en que me apoyas en mi fe.",
+            "88. Porque, en resumen, eres tú.",
+            "89. Que quieres de verdad",
+            "90. Que quieres estar conmigo a pesar de como soy",
+            "91. Que te agrado",
+            "92. Que compartimos manilla 🤭",
+            "93. Esa forma de aveces provocar mi ternura :v",
+            "94. Tu forma hermosa de ser cuando hablamos 😍",
+            "95. Tu fuerza para seguir",
+            "96. (Emm piensa Brandon :v) Que te gusta el kdrama",
+            "97. Que amas de verdad a pesar de todo 💖 ❤️‍🩹",
+            "98. Que aunque aveces no me dices como estás tiendes a contarmelo, esa confianza que as puesto en mi",
+            "99. Esa confianza que en puesto en ti y que no me has desfraudado, eres la apuesta más correcta en la búsqueda de la persona más especial ❤️",
+            "100. Porque, en resumen, eres tú"
+        ];
+
+        document.getElementById('show-reasons').addEventListener('click', function() {
+            const initialScreen = document.getElementById('initial-screen');
+            const reasonsScreen = document.getElementById('reasons-screen');
+            const reasonsContainer = document.querySelector('.reasons-container');
+            
+            initialScreen.style.opacity = '0';
+            
+            setTimeout(() => {
+                initialScreen.style.display = 'none';
+                reasonsScreen.style.display = 'flex';
+                
+                reasons.forEach(reason => {
+                    const reasonElement = document.createElement('p');
+                    reasonElement.className = 'reason';
+                    reasonElement.textContent = reason;
+                    reasonsContainer.appendChild(reasonElement);
+                });
+            }, 500);
+        });
+
+        document.addEventListener('click', function(e) {
+            createHeart(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            createHeart(touch.clientX, touch.clientY);
+        });
+
+        function createHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = (x - 12) + 'px';
+            heart.style.top = (y - 12) + 'px';
+            
+            const randomX = (Math.random() - 0.5) * 200;
+            const randomY = (Math.random() - 0.7) * 200;
+            heart.style.setProperty('--x', randomX + 'px');
+            heart.style.setProperty('--y', randomY + 'px');
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
