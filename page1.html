@@ -79,6 +79,17 @@
             transform: scale(1.05);
         }
 
+        #back-button {
+            background-color: #6a1b9a;
+            color: white;
+            margin-top: 20px;
+        }
+
+        #back-button:hover {
+            background-color: #4a148c;
+            transform: scale(1.05);
+        }
+
         #reasons-screen {
             display: none;
             flex-direction: column;
@@ -175,6 +186,7 @@
         <p class="sub-text">Yo te daré los 100 motivos para que te amen y te quieran de verdad</p>
         <p class="sub-text">( Escritos cada uno por mi. )</p>
         <button id="show-reasons" class="btn">Click para conocerlos ❤️</button>
+        <button id="back-button" class="btn">Volver</button>
     </div>
 
 
@@ -309,6 +321,11 @@
                     reasonsContainer.appendChild(reasonElement);
                 });
             }, 500);
+        });
+
+        // Agregar funcionalidad al botón Volver
+        document.getElementById('back-button').addEventListener('click', function() {
+            window.location.href = 'index.html';
         });
 
         document.addEventListener('click', function(e) {

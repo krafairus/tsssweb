@@ -12,6 +12,12 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+            position: relative;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #ffb6c1, #ffc0cb, #ffd1dc, #ffe4e1);
@@ -20,10 +26,10 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            position: relative;
-            overflow-x: hidden;
-            touch-action: manipulation;
             padding: 20px;
+            /* Fijar el fondo para que cubra toda el área */
+            background-attachment: fixed;
+            background-size: cover;
         }
 
         .header {
@@ -104,7 +110,7 @@
         }
 
         .heart {
-            position: absolute;
+            position: fixed;
             font-size: 20px;
             z-index: 100;
             pointer-events: none;
@@ -113,7 +119,7 @@
         }
 
         .floating-emoji {
-            position: absolute;
+            position: fixed;
             font-size: 24px;
             opacity: 0;
             z-index: 1;
@@ -180,6 +186,25 @@
         .menu-item:nth-child(2) {
             animation-delay: 0.5s;
         }
+
+        /* Media queries para mejor adaptación en móviles */
+        @media (max-width: 480px) {
+            .title {
+                font-size: 36px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+            }
+            
+            .menu-text {
+                font-size: 16px;
+            }
+            
+            .footer-text {
+                font-size: 24px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -197,6 +222,11 @@
         <div class="menu-item" onclick="navigateTo('page2.html')">
             <span class="menu-text">Feliz cumpleaños 2025</span>
             <span class="menu-emoji">🎂</span>
+        </div>
+
+        <div class="menu-item" onclick="navigateTo('resources/game1.html')">
+            <span class="menu-text">Juego 1 - Persona increible</span>
+            <span class="menu-emoji">👾</span>
         </div>
     </div>
 
