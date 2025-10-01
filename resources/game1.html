@@ -25,7 +25,7 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            background: url('resources/fondo.jpg') no-repeat center center;
+            background: url('fondo.jpg') no-repeat center center;
             background-size: cover;
         }
 
@@ -77,27 +77,42 @@
             font-weight: bold;
         }
 
+        #power-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            font-size: 1rem;
+            color: #d81b60;
+            font-weight: bold;
+            display: none;
+        }
+
         #victory-message {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 150;
             background-color: rgba(255, 255, 255, 0.9);
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-            font-size: 1.2rem;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            font-size: 1.5rem;
             color: #d81b60;
             font-weight: bold;
             text-align: center;
             display: none;
-            transform: translateX(100%);
-            transition: transform 0.5s ease-out;
+            max-width: 80%;
+            animation: messageAppear 0.5s ease-out;
         }
 
         #victory-message.show {
             display: block;
-            transform: translateX(0);
         }
 
         #player {
@@ -125,6 +140,18 @@
             object-fit: cover;
         }
 
+        .player-shield {
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid #00ffff;
+            box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;
+            z-index: 9;
+            animation: shieldPulse 1.5s infinite;
+            pointer-events: none;
+        }
+
         .bullet {
             position: absolute;
             width: 5px;
@@ -133,6 +160,16 @@
             border-radius: 2px;
             z-index: 5;
             box-shadow: 0 0 5px #ff0, 0 0 10px #ff0;
+        }
+
+        .fast-bullet {
+            background-color: #ff9900;
+            box-shadow: 0 0 5px #ff9900, 0 0 10px #ff9900;
+        }
+
+        .double-bullet {
+            background-color: #ff00ff;
+            box-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
         }
 
         .enemy {
@@ -254,6 +291,17 @@
             to { opacity: 1; }
         }
 
+        @keyframes messageAppear {
+            from { 
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to { 
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
         .power-up {
             position: absolute;
             font-size: 25px;
@@ -287,6 +335,21 @@
             100% { transform: translateY(-30px); opacity: 0; }
         }
 
+        .power-active {
+            animation: powerGlow 0.5s infinite alternate;
+        }
+
+        @keyframes powerGlow {
+            from { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+            to { box-shadow: 0 0 20px rgba(255, 255, 255, 0.9); }
+        }
+
+        @keyframes shieldPulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+
         @media (max-width: 768px) {
             #player {
                 width: 60px;
@@ -318,9 +381,8 @@
             }
 
             #victory-message {
-                font-size: 1rem;
-                padding: 10px;
-                right: 10px;
+                font-size: 1.2rem;
+                padding: 15px;
             }
 
             #start-screen h1 {
@@ -336,8 +398,8 @@
 <body>
     <div id="game-container">
         <div id="start-screen">
-            <h1>Lucha contra el enemigo jeje</h1>
-            <p>¡Protege tu corazón de los enemigos y rompe records sin limites!</p>
+            <h1>Juego para Rubi</h1>
+            <p>¡Protege tu corazón de los enemigos y alcanza diferentes metas para descubrir mensajes especiales!</p>
             <button class="game-btn" id="start-btn">Iniciar Juego</button>
         </div>
         
@@ -346,13 +408,12 @@
             <div id="lives">Vidas: 3</div>
         </div>
         
-        <div id="victory-message">
-            Ganaste el premio a la<br>
-            persona más increíble 🏆
-        </div>
+        <div id="power-indicator"></div>
+        
+        <div id="victory-message"></div>
         
         <div id="player">
-            <img id="player-img" src="img.png" alt="Rubi" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjEwMCIgZmlsbD0iI2ZmODZiMyIvPjxwYXRoIGQ9Ik03MCA4MEM2MCA5MCA2MCAxMTAgNzAgMTIwQzgwIDEzMCAxMDAgMTMwIDExMCAxMjBDMTIwIDExMCAxMjAgOTAgMTEwIDgwQzEwMCA3MCA4MCA3MCA3MCA4MFoiIGZpbGw9IiNmZmZmZmYiLz48Y2lyY2xlIGN4PSI3MCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxjaXJjbGUgY3g9IjExMCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxwYXRoIGQ9Ik03MCAxNDBDOTAgMTUwIDExMCAxNTAgMTMwIDE0MCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg=='">
+            <img id="player-img" src="img.png" alt="Rubi" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjEwMCIgZmlsbD0iI2ZmODZiMyIvPjxwYXRoIGQ9Ik03MCA4MEM2MCA5MCA2MCAxMTAgNzAgMTIwQzgw IDEzMCAxMDAgMTMwIDExMCAxMjBDMTIwIDExMCAxMjAgOTAgMTEwIDgwQzEwMCA3MCA4MCA3MCA3MCA4MFoiIGZpbGw9IiNmZmZmZmYiLz48Y2lyY2xlIGN4PSI3MCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxjaXJjbGUgY3g9IjExMCIgY3k9IjgwIiByPSIxMCIgZmlsbD0iIzAwMDAwMCIvPjxwYXRoIGQ9Ik03MCAxNDBDOTAgMTUwIDExMCAxNTAgMTMwIDE0MCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg=='">
         </div>
         
         <div id="game-over">
@@ -377,6 +438,7 @@
         let powerUps = [];
         let lastBulletTime = 0;
         let bulletInterval = 300; // ms entre disparos
+        let originalBulletInterval = 300;
         let enemySpawnRate = 1500; // ms entre aparición de enemigos
         let lastEnemySpawn = 0;
         let lastEnemyShoot = 0;
@@ -384,7 +446,14 @@
         let victoryAchieved = false; // para controlar que la victoria solo se muestre una vez
         let lastPowerUpSpawn = 0;
         let powerUpSpawnRate = 10000; // ms entre aparición de power-ups
+        let activePower = null;
+        let powerEndTime = 0;
+        let powerDuration = 10000; // 10 segundos de duración de poderes (aumentado de 5 a 10)
+        let shownMessages = []; // Para controlar qué mensajes ya se mostraron
+        let shieldElement = null; // Elemento del escudo visual
+        let baseEnemySpeed = 1.5; // Velocidad base de enemigos
 
+        // Elementos del DOM
         const gameContainer = document.getElementById('game-container');
         const player = document.getElementById('player');
         const scoreDisplay = document.getElementById('score');
@@ -395,6 +464,73 @@
         const restartBtn = document.getElementById('restart-btn');
         const backToReasonsBtn = document.getElementById('back-to-reasons');
         const victoryMessage = document.getElementById('victory-message');
+        const powerIndicator = document.getElementById('power-indicator');
+
+        // Sistema de sonidos
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(frequency, duration, type = 'sine', volume = 0.1) {
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = type;
+            oscillator.frequency.value = frequency;
+            
+            gainNode.gain.value = volume;
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+        
+        function playShootSound(isFast = false, isDouble = false) {
+            if (isDouble) {
+                // Sonido de disparo doble (más complejo)
+                playSound(700, 0.1, 'square', 0.1);
+                setTimeout(() => playSound(900, 0.1, 'square', 0.08), 50);
+            } else if (isFast) {
+                // Sonido de disparo rápido (más agudo)
+                playSound(800, 0.1, 'square', 0.1);
+            } else {
+                // Sonido de disparo normal
+                playSound(600, 0.1, 'square', 0.1);
+            }
+        }
+        
+        function playEnemyDestroySound() {
+            // Sonido de explosión de enemigo
+            playSound(200, 0.3, 'sawtooth', 0.15);
+            setTimeout(() => playSound(150, 0.2, 'sawtooth', 0.1), 100);
+        }
+        
+        function playPowerUpSound() {
+            // Sonido de power-up (ascendente)
+            playSound(300, 0.3, 'sine', 0.15);
+            setTimeout(() => playSound(500, 0.2, 'sine', 0.1), 100);
+            setTimeout(() => playSound(700, 0.1, 'sine', 0.05), 200);
+        }
+        
+        function playPowerDownSound() {
+            // Sonido de fin de power-up (descendente)
+            playSound(700, 0.2, 'sine', 0.1);
+            setTimeout(() => playSound(500, 0.2, 'sine', 0.08), 100);
+            setTimeout(() => playSound(300, 0.2, 'sine', 0.05), 200);
+        }
+        
+        function playVictorySound() {
+            // Sonido de victoria (melodía ascendente)
+            playSound(523, 0.2, 'sine', 0.1); // Do
+            setTimeout(() => playSound(659, 0.2, 'sine', 0.1), 200); // Mi
+            setTimeout(() => playSound(784, 0.2, 'sine', 0.1), 400); // Sol
+            setTimeout(() => playSound(1047, 0.5, 'sine', 0.15), 600); // Do alto
+        }
 
         function init() {
             const playerImg = document.getElementById('player-img');
@@ -431,6 +567,12 @@
         // Actualizar posición del jugador
         function updatePlayerPosition() {
             player.style.left = `${playerX - player.offsetWidth / 2}px`;
+            if (shieldElement) {
+                // Posicionar el escudo centrado sobre el jugador
+                const playerRect = player.getBoundingClientRect();
+                shieldElement.style.left = `${playerRect.left - 10}px`;
+                shieldElement.style.top = `${playerRect.top - 10}px`;
+            }
         }
 
         // Manejar movimiento táctil
@@ -465,11 +607,18 @@
             const damageValues = [10, 15, 20, 25, 30]; 
             
             const typeIndex = Math.floor(Math.random() * enemyTypes.length);
+            
+            // Aumentar velocidad de enemigos a partir de 800 puntos
+            let speedMultiplier = 1;
+            if (score >= 800) {
+                speedMultiplier = 1.3; // 30% más rápido
+            }
+            
             const enemy = {
                 element: document.createElement('div'),
                 x: Math.random() * (window.innerWidth - 50),
                 y: -50,
-                speed: 1 + Math.random() * 1.5,
+                speed: (1 + Math.random() * 1.5) * speedMultiplier,
                 type: enemyTypes[typeIndex],
                 damage: damageValues[typeIndex],
                 health: 1,
@@ -486,7 +635,7 @@
 
         // Crear un power-up
         function spawnPowerUp() {
-            const powerUpTypes = ['❤️', '⭐', '💎'];
+            const powerUpTypes = ['❤️', '⭐', '💎', '🛡️', '🔫'];
             const powerUp = {
                 element: document.createElement('div'),
                 x: Math.random() * (window.innerWidth - 30),
@@ -505,18 +654,54 @@
         }
 
         function shoot() {
-            const bullet = document.createElement('div');
-            bullet.className = 'bullet';
-            bullet.style.left = `${playerX - 2.5}px`;
-            bullet.style.bottom = `${player.offsetHeight + 50}px`;
-            gameContainer.appendChild(bullet);
+            // Disparo normal
+            if (activePower !== 'double-shoot') {
+                const bullet = document.createElement('div');
+                bullet.className = activePower === 'fast-shoot' ? 'bullet fast-bullet' : 'bullet';
+                bullet.style.left = `${playerX - 2.5}px`;
+                bullet.style.bottom = `${player.offsetHeight + 50}px`;
+                gameContainer.appendChild(bullet);
+                
+                bullets.push({
+                    element: bullet,
+                    x: playerX - 2.5,
+                    y: window.innerHeight - player.offsetHeight - 50,
+                    speed: 5
+                });
+            } 
+            // Disparo doble
+            else {
+                // Crear dos balas, una a cada lado
+                const bullet1 = document.createElement('div');
+                bullet1.className = 'bullet double-bullet';
+                bullet1.style.left = `${playerX - 15}px`;
+                bullet1.style.bottom = `${player.offsetHeight + 50}px`;
+                gameContainer.appendChild(bullet1);
+                
+                const bullet2 = document.createElement('div');
+                bullet2.className = 'bullet double-bullet';
+                bullet2.style.left = `${playerX + 10}px`;
+                bullet2.style.bottom = `${player.offsetHeight + 50}px`;
+                gameContainer.appendChild(bullet2);
+                
+                bullets.push(
+                    {
+                        element: bullet1,
+                        x: playerX - 15,
+                        y: window.innerHeight - player.offsetHeight - 50,
+                        speed: 5
+                    },
+                    {
+                        element: bullet2,
+                        x: playerX + 10,
+                        y: window.innerHeight - player.offsetHeight - 50,
+                        speed: 5
+                    }
+                );
+            }
             
-            bullets.push({
-                element: bullet,
-                x: playerX - 2.5,
-                y: window.innerHeight - player.offsetHeight - 50,
-                speed: 5
-            });
+            // Reproducir sonido de disparo
+            playShootSound(activePower === 'fast-shoot', activePower === 'double-shoot');
         }
 
         function enemyShoot(enemy) {
@@ -560,39 +745,127 @@
             }, 1000);
         }
 
-        // Mostrar mensaje de victoria
-        function showVictoryMessage() {
-            if (victoryAchieved) return;
+        // Activar un poder temporal
+        function activatePower(powerType) {
+            // Si ya hay un poder activo, desactivarlo primero
+            if (activePower) {
+                deactivatePower();
+            }
             
-            victoryAchieved = true;
+            activePower = powerType;
+            powerEndTime = Date.now() + powerDuration;
+            
+            // Reproducir sonido de activación de poder
+            playPowerUpSound();
+            
+            // Aplicar efectos del poder
+            if (powerType === 'fast-shoot') {
+                bulletInterval = 100; // Disparo más rápido
+                player.classList.add('power-active');
+                powerIndicator.textContent = 'Disparo Rápido Activado';
+            } else if (powerType === 'shield') {
+                // Crear escudo visual centrado sobre el jugador
+                shieldElement = document.createElement('div');
+                shieldElement.className = 'player-shield';
+                
+                // Posicionar el escudo correctamente
+                const playerRect = player.getBoundingClientRect();
+                shieldElement.style.left = `${playerRect.left - 10}px`;
+                shieldElement.style.top = `${playerRect.top - 10}px`;
+                
+                gameContainer.appendChild(shieldElement);
+                powerIndicator.textContent = 'Escudo Activado';
+            } else if (powerType === 'double-shoot') {
+                player.classList.add('power-active');
+                powerIndicator.textContent = 'Disparo Doble Activado';
+            }
+            
+            powerIndicator.style.display = 'block';
+        }
+
+        // Desactivar poderes
+        function deactivatePower() {
+            // Reproducir sonido de desactivación de poder
+            playPowerDownSound();
+            
+            if (activePower === 'fast-shoot') {
+                bulletInterval = originalBulletInterval;
+                player.classList.remove('power-active');
+            } else if (activePower === 'shield') {
+                // Eliminar escudo visual
+                if (shieldElement) {
+                    gameContainer.removeChild(shieldElement);
+                    shieldElement = null;
+                }
+            } else if (activePower === 'double-shoot') {
+                player.classList.remove('power-active');
+            }
+            
+            activePower = null;
+            powerIndicator.style.display = 'none';
+        }
+
+        // Mostrar mensaje de victoria según la puntuación
+        function showVictoryMessage() {
+            let message = "";
+            let emoji = "";
+            
+            if (score >= 800 && !shownMessages.includes(800)) {
+                message = "¡Eres la persona más increíble del universo! 🚀<br>800 puntos demuestran que no tienes límites";
+                emoji = "🚀";
+                shownMessages.push(800);
+            } else if (score >= 600 && !shownMessages.includes(600)) {
+                message = "¡Eres absolutamente increíble! 🌟<br>600 puntos es algo que solo tú podrías lograr";
+                emoji = "🌟";
+                shownMessages.push(600);
+            } else if (score >= 400 && !shownMessages.includes(400)) {
+                message = "¡Eres una superestrella! ✨<br>400 puntos demuestran tu talento único";
+                emoji = "✨";
+                shownMessages.push(400);
+            } else if (score >= 200 && !shownMessages.includes(200)) {
+                message = "¡Eres simplemente maravillosa! 💖<br>200 puntos muestran lo especial que eres";
+                emoji = "💖";
+                shownMessages.push(200);
+            } else if (score >= 100 && !shownMessages.includes(100)) {
+                message = "Ganaste el premio a la<br>persona más increíble 🏆";
+                emoji = "🏆";
+                shownMessages.push(100);
+            } else {
+                return; // No mostrar mensaje si no se alcanzó ningún hito nuevo
+            }
+            
+            victoryMessage.innerHTML = message;
             victoryMessage.classList.add('show');
             
-            createCelebrationEmojis();
+            // Reproducir sonido de victoria
+            playVictorySound();
+            
+            createCelebrationEmojis(emoji);
             
             setTimeout(() => {
                 victoryMessage.classList.remove('show');
-            }, 8000);
+            }, 4000);
         }
 
-        function createCelebrationEmojis() {
+        function createCelebrationEmojis(emoji) {
             const emojiCount = 15; 
             
             for (let i = 0; i < emojiCount; i++) {
-                const emoji = document.createElement('div');
-                emoji.className = 'celebration-emoji';
-                emoji.textContent = '🎉';
+                const celebrationEmoji = document.createElement('div');
+                celebrationEmoji.className = 'celebration-emoji';
+                celebrationEmoji.textContent = emoji;
                 
                 const xPos = Math.random() * (window.innerWidth - 40);
                 const yPos = Math.random() * (window.innerHeight - 40);
                 
-                emoji.style.left = `${xPos}px`;
-                emoji.style.top = `${yPos}px`;
+                celebrationEmoji.style.left = `${xPos}px`;
+                celebrationEmoji.style.top = `${yPos}px`;
                 
-                gameContainer.appendChild(emoji);
+                gameContainer.appendChild(celebrationEmoji);
                 
                 setTimeout(() => {
-                    if (emoji.parentNode) {
-                        gameContainer.removeChild(emoji);
+                    if (celebrationEmoji.parentNode) {
+                        gameContainer.removeChild(celebrationEmoji);
                     }
                 }, 2000);
             }
@@ -602,6 +875,18 @@
             if (!gameStarted) return;
             
             const currentTime = Date.now();
+            
+            // Verificar si el poder activo ha expirado
+            if (activePower && currentTime > powerEndTime) {
+                deactivatePower();
+            }
+            
+            // Actualizar posición del escudo si está activo
+            if (shieldElement) {
+                const playerRect = player.getBoundingClientRect();
+                shieldElement.style.left = `${playerRect.left - 10}px`;
+                shieldElement.style.top = `${playerRect.top - 10}px`;
+            }
             
             if (currentTime - lastBulletTime > bulletInterval) {
                 shoot();
@@ -671,19 +956,26 @@
                         lives = Math.min(lives + 1, 5);
                         livesDisplay.textContent = `Vidas: ${lives}`;
                         showDamageText(playerRect.left, playerRect.top, '+1 Vida');
+                        playPowerUpSound();
                     } else if (powerUp.type === '⭐') {
                         score += 20;
                         scoreDisplay.textContent = `Puntos: ${score}`;
                         showDamageText(playerRect.left, playerRect.top, '+20 Puntos');
+                        playPowerUpSound();
+                        showVictoryMessage();
                     } else if (powerUp.type === '💎') {
-                        bulletInterval = Math.max(100, bulletInterval - 50);
+                        activatePower('fast-shoot');
                         showDamageText(playerRect.left, playerRect.top, 'Disparo Rápido');
+                    } else if (powerUp.type === '🛡️') {
+                        activatePower('shield');
+                        showDamageText(playerRect.left, playerRect.top, 'Escudo Activado');
+                    } else if (powerUp.type === '🔫') {
+                        activatePower('double-shoot');
+                        showDamageText(playerRect.left, playerRect.top, 'Disparo Doble');
                     }
                     
-                    // Comprobar si se alcanzaron 100 puntos
-                    if (score >= 100 && !victoryAchieved) {
-                        showVictoryMessage();
-                    }
+                    // Comprobar si se alcanzaron hitos de puntuación
+                    showVictoryMessage();
                 }
             }
             
@@ -720,10 +1012,11 @@
                         score += 10;
                         scoreDisplay.textContent = `Puntos: ${score}`;
                         
-                        // Comprobar si se alcanzaron 100 puntos
-                        if (score >= 100 && !victoryAchieved) {
-                            showVictoryMessage();
-                        }
+                        // Reproducir sonido de destrucción de enemigo
+                        playEnemyDestroySound();
+                        
+                        // Comprobar si se alcanzaron hitos de puntuación
+                        showVictoryMessage();
                         
                         // Crear explosión
                         createExplosion(enemy.x, enemy.y, '💥');
@@ -754,15 +1047,23 @@
                     bullet.y > playerRect.top &&
                     bullet.y < playerRect.bottom
                 ) {
-                    // Colisión detectada
-                    gameContainer.removeChild(bullet.element);
-                    enemyBullets.splice(i, 1);
-                    
-                    // Quitar vida al jugador
-                    loseLife();
-                    
-                    // Crear explosión
-                    createExplosion(playerRect.left, playerRect.top, '💥');
+                    // Si hay escudo activo, no perder vida
+                    if (activePower === 'shield') {
+                        gameContainer.removeChild(bullet.element);
+                        enemyBullets.splice(i, 1);
+                        createExplosion(bullet.x, bullet.y, '💫');
+                        playPowerUpSound(); // Sonido de bloqueo con escudo
+                    } else {
+                        // Colisión detectada
+                        gameContainer.removeChild(bullet.element);
+                        enemyBullets.splice(i, 1);
+                        
+                        // Quitar vida al jugador
+                        loseLife();
+                        
+                        // Crear explosión
+                        createExplosion(playerRect.left, playerRect.top, '💥');
+                    }
                 }
             }
         }
